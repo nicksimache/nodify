@@ -1,51 +1,8 @@
-﻿using System;
+using System;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Nodify.Playground
 {
-    public static class CompositionTargetEx
-    {
-        private static TimeSpan _last = TimeSpan.Zero;
-        private static event Action<double>? FrameUpdating;
-
-        public static event Action<double> Rendering
-        {
-            add
-            {
-                if (FrameUpdating == null)
-                {
-                    CompositionTarget.Rendering += OnRendering;
-                }
-                FrameUpdating += value;
-            }
-            remove
-            {
-                FrameUpdating -= value;
-                if (FrameUpdating == null)
-                {
-                    CompositionTarget.Rendering -= OnRendering;
-                }
-            }
-        }
-
-        private static void OnRendering(object? sender, EventArgs e)
-        {
-            RenderingEventArgs args = (RenderingEventArgs)e;
-            var renderingTime = args.RenderingTime;
-            if (renderingTime == _last)
-                return;
-
-            double fps = 1000 / (renderingTime - _last).TotalMilliseconds;
-            _last = renderingTime;
-            FrameUpdating?.Invoke(fps);
-        }
-    }
-
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly Random _rand = new Random();
@@ -54,22 +11,31 @@ namespace Nodify.Playground
         {
             InitializeComponent();
 
-            CompositionTargetEx.Rendering += OnRendering;
-
-            EventManager.RegisterClassHandler(
-                    typeof(UIElement),
-                    Keyboard.PreviewGotKeyboardFocusEvent,
-                    (KeyboardFocusChangedEventHandler)OnPreviewGotKeyboardFocus);
         }
 
-        private void OnPreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private int _nextNodeId = 1;
+
+        private void AddNode_Click(object sender, RoutedEventArgs e) => AddNode(NodeKind.Logic);
+        private void AddImplementation_Click(object sender, RoutedEventArgs e) => AddNode(NodeKind.Implementation);
+
+        private void AddNode(NodeKind kind)
         {
-            Title = e.NewFocus.ToString();
+            var editor = EditorView.EditorInstance;
+            var graph = ((PlaygroundViewModel)DataContext).GraphViewModel;
+            var offset = graph.Nodes.Count % 5 * 30;
+            var node = FlowNodeViewModel.Create(kind, $"{kind} {_nextNodeId++}");
+            node.Location = new Point(editor.ViewportLocation.X + editor.ViewportSize.Width * 0.4 - 120 + offset,
+                editor.ViewportLocation.Y + editor.ViewportSize.Height * 0.5 - 90 + offset);
+            graph.Nodes.Add(node);
+            graph.SelectedNode = node;
         }
 
-        private void OnRendering(double fps)
+        private void DeckExample_Click(object sender, RoutedEventArgs e)
         {
-            FPSText.Text = fps.ToString("0");
+            var graph = ((PlaygroundViewModel)DataContext).GraphViewModel;
+            var root = DeckBuilderExample.AddTo(graph);
+            graph.SelectedNode = root;
+            EditorCommands.FitToScreen.Execute(null, EditorView.EditorInstance);
         }
 
         private void BringIntoView_Click(object sender, RoutedEventArgs e)
@@ -77,6 +43,7 @@ namespace Nodify.Playground
             if (DataContext is PlaygroundViewModel model)
             {
                 NodifyObservableCollection<NodeViewModel> nodes = model.GraphViewModel.Nodes;
+                if (nodes.Count == 0) return;
                 int index = _rand.Next(nodes.Count);
 
                 if (nodes.Count > index)

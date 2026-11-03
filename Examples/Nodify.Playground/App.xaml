@@ -47,6 +47,7 @@
                         </Setter>
                     </Style>
                 </ResourceDictionary>
+                <ResourceDictionary Source="Themes/Lavender.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

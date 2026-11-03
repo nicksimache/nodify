@@ -1,0 +1,26 @@
+{
+  "Playground": {
+    "EditorGesturesMappings": "Default",
+    "EditorInputMode": "Default",
+    "ShowGridLines": true,
+    "ShowMinimap": true,
+    "DisableMinimapControls": false,
+    "ResizeToViewport": false,
+    "MinimapMaxViewportOffset": "2000,2000"
+  },
+  "Editor": {
+    "GridSpacing": 15,
+    "Zoom": 1,
+    "MinZoom": 0.1,
+    "MaxZoom": 2,
+    "DraggableNodes": true,
+    "SelectableNodes": true,
+    "CanSelectMultipleNodes": true,
+    "DisablePanning": false,
+    "DisableZooming": false,
+    "EnablePendingConnectionSnapping": true,
+    "EnablePendingConnectionPreview": true,
+    "ConnectionStyle": "Default",
+    "ConnectionStrokeThickness": 2
+  }
+}

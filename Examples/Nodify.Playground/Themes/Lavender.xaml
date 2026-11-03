@@ -1,0 +1,71 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="ForegroundColor">#E8E3D8</Color>
+    <Color x:Key="BackgroundColor">#333337</Color>
+    <Color x:Key="ContrastBackgroundColor">#252526</Color>
+    <Color x:Key="HighlightedBackgroundColor">#404046</Color>
+    <Color x:Key="BorderColor">#4A4A50</Color>
+    <Color x:Key="HighlightedBorderColor">#73BBB4</Color>
+    <Color x:Key="FocusedBorderColor">#5FA8A2</Color>
+    <Color x:Key="GridLinesColor">#39393D</Color>
+    <Color x:Key="PanelBackgroundColor">#2D2D30</Color>
+    <Color x:Key="NodifyEditor.BackgroundColor">#252526</Color>
+    <Color x:Key="NodifyEditor.ForegroundColor">#E8E3D8</Color>
+    <Color x:Key="NodifyEditor.SelectionRectangleColor">#5FA8A2</Color>
+    <Color x:Key="NodifyEditor.FocusVisualColor">#5FA8A2</Color>
+    <Color x:Key="ItemContainer.BorderColor">#4A4A50</Color>
+    <Color x:Key="ItemContainer.SelectedColor">#5FA8A2</Color>
+    <Color x:Key="Node.BackgroundColor">#333337</Color>
+    <Color x:Key="Node.ContentColor">#333337</Color>
+    <Color x:Key="Node.ForegroundColor">#E8E3D8</Color>
+    <Color x:Key="Node.HeaderForegroundColor">#E8E3D8</Color>
+    <Color x:Key="Node.HeaderColor">#2D2D30</Color>
+    <Color x:Key="Node.FooterColor">#2D2D30</Color>
+    <Color x:Key="Node.BorderColor">#4A4A50</Color>
+    <Color x:Key="Connector.BorderColor">#5FA8A2</Color>
+    <Color x:Key="Connector.ForegroundColor">#E8E3D8</Color>
+    <Color x:Key="NodeInput.BorderColor">#5FA8A2</Color>
+    <Color x:Key="NodeInput.ForegroundColor">#E8E3D8</Color>
+    <Color x:Key="NodeOutput.BorderColor">#5FA8A2</Color>
+    <Color x:Key="NodeOutput.ForegroundColor">#E8E3D8</Color>
+    <Color x:Key="Connection.StrokeColor">#5FA8A2</Color>
+    <Color x:Key="LineConnection.StrokeColor">#5FA8A2</Color>
+    <Color x:Key="CircuitConnection.StrokeColor">#5FA8A2</Color>
+    <Color x:Key="StepConnection.StrokeColor">#5FA8A2</Color>
+    <Color x:Key="PendingConnection.StrokeColor">#73BBB4</Color>
+    <Color x:Key="PendingConnection.BackgroundColor">#333337</Color>
+    <Color x:Key="PendingConnection.ForegroundColor">#E8E3D8</Color>
+    <Color x:Key="PendingConnection.BorderColor">#4A4A50</Color>
+    <Color x:Key="Minimap.BackgroundColor">#2D2D30</Color>
+    <Color x:Key="Minimap.ViewportStrokeColor">#5FA8A2</Color>
+    <Color x:Key="Minimap.ViewportBackgroundColor">#5FA8A2</Color>
+    <Color x:Key="MinimapItem.BackgroundColor">#B9B3A8</Color>
+    <!-- Own the textbox template so the Windows theme cannot inject a blue hover fill. -->
+    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Background" Value="#38383D" />
+        <Setter Property="Foreground" Value="#E8E3D8" />
+        <Setter Property="CaretBrush" Value="#E8E3D8" />
+        <Setter Property="SelectionBrush" Value="#65577E" />
+        <Setter Property="BorderBrush" Value="#55555C" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="Surface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
+                        <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Surface" Property="Background" Value="#48484D" />
+                            <Setter TargetName="Surface" Property="BorderBrush" Value="#CAC6D0" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Surface" Property="BorderBrush" Value="#E8E3D8" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Surface" Property="Opacity" Value="0.5" /></Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

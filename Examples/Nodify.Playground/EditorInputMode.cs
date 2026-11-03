@@ -62,8 +62,20 @@ namespace Nodify.Playground
             return mappings switch
             {
                 EditorGesturesMappings.Custom => new CustomGesturesMappings(),
-                _ => new EditorGestures()
+                _ => new CanvasGesturesMappings()
             };
+        }
+    }
+
+    // Empty-canvas dragging pans; node and connector gestures retain their defaults.
+    public class CanvasGesturesMappings : EditorGestures
+    {
+        public CanvasGesturesMappings()
+        {
+            Editor.Pan.Value = new AnyGesture(new Interactivity.MouseGesture(MouseAction.LeftClick),
+                new Interactivity.MouseGesture(MouseAction.MiddleClick), new Interactivity.MouseGesture(MouseAction.RightClick));
+            Editor.Selection.Replace.Value = new Interactivity.MouseGesture(MouseAction.LeftClick, ModifierKeys.Shift, true);
+            Editor.Selection.Append.Value = new Interactivity.MouseGesture(MouseAction.LeftClick, ModifierKeys.Control | ModifierKeys.Shift, true);
         }
     }
 

@@ -9,6 +9,11 @@ namespace Nodify.Playground
         public NodifyEditorViewModel()
         {
             Schema = new GraphSchema();
+            SelectNodeCommand = new DelegateCommand<NodeViewModel>(node => SelectedNode = node);
+            Connections.CollectionChanged += (_, __) =>
+            {
+                foreach (var node in Nodes.OfType<FlowNodeViewModel>()) node.RefreshConnections();
+            };
 
             PendingConnection = new PendingConnectionViewModel
             {
@@ -38,6 +43,7 @@ namespace Nodify.Playground
                  // Not called when the collection is cleared
                  .WhenRemoved(x =>
                  {
+                     if (SelectedNode == x) SelectedNode = null;
                      if (x is FlowNodeViewModel flow)
                      {
                          flow.Disconnect();
@@ -47,7 +53,7 @@ namespace Nodify.Playground
                          knot.Connector.Disconnect();
                      }
                  })
-                 .WhenCleared(x => Connections.Clear());
+                 .WhenCleared(x => { Connections.Clear(); SelectedNode = null; });
         }
 
         private NodifyObservableCollection<NodeViewModel> _nodes = new NodifyObservableCollection<NodeViewModel>();
@@ -98,7 +104,11 @@ namespace Nodify.Playground
         public NodeViewModel? SelectedNode
         {
             get => _selectedNode;
-            set => SetProperty(ref _selectedNode, value);
+            set
+            {
+                if (value is FlowNodeViewModel flow) flow.DetailsExpanded = true;
+                SetProperty(ref _selectedNode, value);
+            }
         }
 
         public GraphSchema Schema { get; }
@@ -109,6 +119,8 @@ namespace Nodify.Playground
             get => _keyboardNavigationLayer; 
             set => SetProperty(ref _keyboardNavigationLayer, value);
         }
+
+        public ICommand SelectNodeCommand { get; }
 
         public ICommand DeleteSelectionCommand { get; }
         public ICommand DisconnectConnectorCommand { get; }

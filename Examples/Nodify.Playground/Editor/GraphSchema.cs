@@ -24,7 +24,7 @@ namespace Nodify.Playground
             else if (source.AllowsNewConnections() && target is FlowNodeViewModel node)
             {
                 var allConnectors = source.Flow == ConnectorFlow.Input ? node.Output : node.Input;
-                return allConnectors.Any(c => c.AllowsNewConnections());
+                return allConnectors.Any(c => CanAddConnection(source, c));
             }
 
             return false;
@@ -63,7 +63,7 @@ namespace Nodify.Playground
         private void AddConnection(ConnectorViewModel source, FlowNodeViewModel target)
         {
             var allConnectors = source.Flow == ConnectorFlow.Input ? target.Output : target.Input;
-            var connector = allConnectors.First(c => c.AllowsNewConnections());
+            var connector = allConnectors.First(c => CanAddConnection(source, c));
 
             AddConnection(source, connector);
         }

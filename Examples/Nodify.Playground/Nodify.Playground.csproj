@@ -14,4 +14,10 @@
     <ProjectReference Include="..\Nodify.Shared\Nodify.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="playground.settings.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net472' OR '$(TargetFramework)'=='net48'">
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
 </Project>
